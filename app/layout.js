@@ -1,28 +1,25 @@
-import { Instrument_Sans } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import './globals.css';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import { SessionProvider } from 'next-auth/react';
 
-const instrumentSans = Instrument_Sans({
+const inter = Inter({
     subsets: ['latin'],
     display: 'swap',
-    variable: '--font-instrument-sans',
+    variable: '--font-inter',
 });
 
 export const metadata = {
     title: 'PharmaConseils - Votre santé, nos conseils',
-    description: 'Votre source de confiance pour tous vos conseils santé et bien-être.',
+    description: 'Votre source de confiance pour tous vos conseils santé et bien-être. Découvrez nos conseils d\'experts pharmaciens.',
 };
 
 export default function RootLayout({ children }) {
     return (
-        <html lang="fr" className={`${instrumentSans.variable}`}>
-            <body className="bg-slate-50 text-slate-700 font-sans antialiased min-h-screen flex flex-col">
-                <Header />
-                <main className="flex-grow">
+        <html lang="fr" className={inter.variable}>
+            <body className="bg-slate-50 text-slate-700 antialiased min-h-screen flex flex-col">
+                <SessionProvider>
                     {children}
-                </main>
-                <Footer />
+                </SessionProvider>
             </body>
         </html>
     );

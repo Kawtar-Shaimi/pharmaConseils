@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { submitComment } from '@/app/posts/[slug]/actions';
+import { submitComment } from '@/app/(public)/posts/[slug]/actions';
 
 export default function CommentsSection({ post, comments }) {
     const [replyingTo, setReplyingTo] = useState(null);
