@@ -4,25 +4,31 @@ import Image from 'next/image';
 
 export const dynamic = 'force-dynamic';
 
-
 export default async function Home() {
-    const categories = await prisma.category.findMany({
-        include: {
-            _count: {
-                select: { posts: { where: { is_published: true } } }
-            }
-        }
-    });
+    let categories = [];
+    let latest = [];
 
-    const latest = await prisma.post.findMany({
-        where: { is_published: true },
-        take: 3,
-        orderBy: { created_at: 'desc' },
-        include: {
-            category: true,
-            user: true
-        }
-    });
+    try {
+        categories = await prisma.category.findMany({
+            include: {
+                _count: {
+                    select: { posts: { where: { is_published: true } } }
+                }
+            }
+        });
+
+        latest = await prisma.post.findMany({
+            where: { is_published: true },
+            take: 3,
+            orderBy: { created_at: 'desc' },
+            include: {
+                category: true,
+                user: true
+            }
+        });
+    } catch (error) {
+        console.error('Database error:', error.message);
+    }
 
     return (
         <>

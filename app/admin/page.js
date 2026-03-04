@@ -3,21 +3,27 @@ import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
-
 export default async function AdminDashboard() {
-    const postsCount = await prisma.post.count();
-    const pendingCommentsCount = await prisma.comment.count({
-        where: { is_approved: false }
-    });
-    const categoriesCount = await prisma.category.count();
+    let postsCount = 0;
+    let pendingCommentsCount = 0;
+    let categoriesCount = 0;
+    let latestPosts = [];
 
-    const latestPosts = await prisma.post.findMany({
-        take: 5,
-        orderBy: { created_at: 'desc' },
-        include: {
-            user: true
-        }
-    });
+    try {
+        postsCount = await prisma.post.count();
+        pendingCommentsCount = await prisma.comment.count({
+            where: { is_approved: false }
+        });
+        categoriesCount = await prisma.category.count();
+
+        latestPosts = await prisma.post.findMany({
+            take: 5,
+            orderBy: { created_at: 'desc' },
+            include: { user: true }
+        });
+    } catch (error) {
+        console.error('Database error:', error.message);
+    }
 
     return (
         <div className="container mx-auto px-5 py-10">

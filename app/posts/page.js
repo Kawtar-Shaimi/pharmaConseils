@@ -3,15 +3,17 @@ import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
-
 export default async function PostsIndex() {
-    const posts = await prisma.post.findMany({
-        where: { is_published: true },
-        orderBy: { created_at: 'desc' },
-        include: {
-            category: true,
-        }
-    });
+    let posts = [];
+    try {
+        posts = await prisma.post.findMany({
+            where: { is_published: true },
+            orderBy: { created_at: 'desc' },
+            include: { category: true }
+        });
+    } catch (error) {
+        console.error('Database error:', error.message);
+    }
 
     return (
         <div className="container mx-auto px-5 py-16">
