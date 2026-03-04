@@ -3,6 +3,9 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import CommentsSection from '@/components/CommentsSection';
 
+export const dynamic = 'force-dynamic';
+
+
 export default async function PostShow({ params }) {
     const { slug } = await params;
 
